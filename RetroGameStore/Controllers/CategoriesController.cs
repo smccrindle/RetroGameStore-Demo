@@ -22,6 +22,7 @@ public class CategoriesController : Controller
     }
 
     // GET: CATEGORYS/Details/5
+    [AllowAnonymous]
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null)
