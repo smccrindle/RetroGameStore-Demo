@@ -5,7 +5,7 @@ using RetroGameStore.Models;
 using RetroGameStore.Data;
 using Microsoft.AspNetCore.Authorization;
 
-[Authorize]
+[Authorize(Roles = "Administrator")]
 public class CategoriesController : Controller
 {
     private readonly ApplicationDbContext _context;
@@ -22,7 +22,6 @@ public class CategoriesController : Controller
     }
 
     // GET: CATEGORYS/Details/5
-    [AllowAnonymous]
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null)

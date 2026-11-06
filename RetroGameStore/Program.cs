@@ -14,7 +14,14 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
-
+// Adding Google OAuth
+builder.Services.AddAuthentication()
+    .AddGoogle(options =>
+    {
+        // Accessing configuration directly via the builder
+        options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+    });
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -32,6 +39,7 @@ else
 app.UseHttpsRedirection();
 app.UseRouting();
 
+app.UseAuthentication(); // This MUST come before UseAuthorization
 app.UseAuthorization();
 
 app.MapStaticAssets();
