@@ -13,6 +13,8 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
+// Enable sessions
+builder.Services.AddSession();
 builder.Services.AddControllersWithViews();
 // Adding Google OAuth
 builder.Services.AddAuthentication()
@@ -38,6 +40,9 @@ else
 
 app.UseHttpsRedirection();
 app.UseRouting();
+
+// Session support
+app.UseSession();
 
 app.UseAuthentication(); // This MUST come before UseAuthorization
 app.UseAuthorization();

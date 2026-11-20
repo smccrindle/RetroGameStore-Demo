@@ -9,6 +9,6 @@
         public DateTime DateCreated { get; set; }
         public double Price { get; set; }
         // Reference to parent
-        public required Product Product { get; set; }
+        public Product Product { get; set; }
     }
 }

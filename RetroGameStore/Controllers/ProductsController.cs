@@ -24,6 +24,7 @@ public class ProductsController : Controller
     }
 
     // GET: PRODUCTS/Details/5
+    [AllowAnonymous]
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null)
