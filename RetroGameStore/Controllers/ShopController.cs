@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using RetroGameStore.Data;
 using RetroGameStore.Models;
 
@@ -56,6 +57,18 @@ namespace RetroGameStore.Controllers
 
             // Redirect to show the current cart
             return RedirectToAction("Cart");
+        }
+
+        // Shop/Cart
+        public IActionResult Cart()
+        {
+            // Get CustomerId from the session variable
+            var customerId = HttpContext.Session.GetString("CustomerId");
+            // Get items in the customer's cart
+            //var cartItems = _context.Carts.Where(c => c.CustomerId == customerId).ToList();
+            var cartItems = _context.Carts.Include(c => c.Product).Where(c => c.CustomerId == customerId).ToList();
+            // Load the cart page and display the customer's items
+            return View(cartItems);
         }
 
         private string GetCustomerId()
