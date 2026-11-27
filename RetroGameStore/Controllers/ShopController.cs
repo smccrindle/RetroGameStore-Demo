@@ -87,5 +87,20 @@ namespace RetroGameStore.Controllers
             return HttpContext.Session.GetString("CustomerId");
         }
 
+        // GET: /Shop/RemoveFromCart/12
+        public IActionResult RemoveFromCart(int id)
+        {
+            // Remove the selected item from the Carts table
+            var cartItem = _context.Carts.Find(id);
+
+            if (cartItem != null)
+            {
+                _context.Carts.Remove(cartItem);
+                _context.SaveChanges();
+            }
+            // Redirect to the updated Cart page
+            return RedirectToAction("Cart");
+        }
+
     }
 }

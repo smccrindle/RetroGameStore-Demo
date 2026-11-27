@@ -52,7 +52,7 @@
     <form method="post" action="/Shop/AddToCart">
         <div class="form-group mt-4 d-flex flex-column">
             <label class="control-label" for="Quantity">Quantity:</label>
-            <input class="form-control form-control-sm w-25" name="Quantity" id="Quantity" required min="1" max="99999" type="number" />
+            <input class="form-control form-control-sm w-25" name="Quantity" id="Quantity" required min="1" max="99999" type="number" value="1" />
             <input type="hidden" name="ProductId" value="@Model.Id" />
             <button class="btn btn-primary mt-1 w-25">Add to Cart</button>
         </div>
