@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "Your Shopping Cart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    double total = 0;
 }
 
 <h1>Your Shopping Cart</h1>
@@ -13,60 +15,51 @@
                 @Html.DisplayNameFor(model => model.Product)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                @Html.DisplayNameFor(model => model.Quantity)
             </th>
             <th>
                 Product Image
             </th>
-
             <th>
-                @Html.DisplayNameFor(model => model.Quantity)
+                @Html.DisplayNameFor(model => model.Price)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateCreated)
-            </th>
-
-
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-controller="Products" asp-action="Details" asp-route-id="@item.ProductId">@item.Product.Name</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.Quantity)
+                </td>
+                <td>
+                    @if (item.Product.Photo != null)
+                    {
+                        <img src="~/img/product-uploads/@item.Product.Photo" alt="Product image" class="img-thumbnail" />
+                    }
+                </td>
+                <td>
+                    @String.Format("{0:c}", (item.Price * item.Quantity))
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+            total += (@item.Price * @item.Quantity);
+        }
+
         <tr>
-            <td>
-                <a asp-controller="Products" asp-action="Details" asp-route-id="@item.ProductId">@item.Product</a>
-            </td>
-            <td>
-                 @String.Format("{0:c}", item.Price);
-            </td>
-            <td>
-            <td>
-                @if (item.Product.Photo != null)
-                {
-                    <img src="~/img/product-uploads/@item.Product.Photo" alt="Product image" class="img-thumb" />
-                }
-            </td>
-            </td>
-
-            <td>
-                @Html.DisplayFor(model => item.Quantity)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.DateCreated)
-            </td>
-
-
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-
-       <tr>
             <td colspan="3">
                 <a asp-action="Index" class="btn btn-primary">Keep shopping</a>
+            </td>
+            <td>
+                @String.Format("{0:c}", total)
             </td>
             <td class="text-end">
                 <a asp-action="Checkout" class="btn btn-primary">Checkout</a>
