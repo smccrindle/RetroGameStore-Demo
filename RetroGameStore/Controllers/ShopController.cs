@@ -119,11 +119,23 @@ namespace RetroGameStore.Controllers
             return RedirectToAction("Cart");
         }
 
-        // GET: /Shop/Checkout
+        // POST: /Shop/Checkout
         [Authorize]
-        public IActionResult Checkout()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Checkout([Bind("FirstName,LastName,Address,City,Province,PostalCode,Phone")] Order order)
         {
-            return View();
+            // Auto-fill the 3 properties we removed from the form
+            order.OrderDate = DateTime.Now;
+            order.CustomerId = User.Identity.Name;
+            order.OrderTotal = (from c in _context.Carts
+                                where c.CustomerId == HttpContext.Session.GetString("CustomerId")
+                                select c.Quantity * c.Price).Sum();
+            // Now store order in a session variable
+            HttpContext.Session.SetObject("Order", order);
+
+            // Load the payment page
+            return RedirectToAction("Pay");
         }
 
     }
